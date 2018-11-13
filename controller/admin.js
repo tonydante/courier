@@ -62,8 +62,8 @@ class Admins {
     Admin.findOne({
       username: username.trim().toLowerCase()
     })
-      .then((username) => {
-        if (username) {
+      .then((userFound) => {
+        if (userFound) {
           return res.status(409).send({
             error: 'sorry user with that username already exist'
           });

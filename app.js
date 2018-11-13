@@ -16,6 +16,14 @@ if (process.env.NODE_ENV !== 'production') {
 
 const app = express();
 const port = process.env.PORT || 3002;
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", '*');
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json,x-access-token');
+  next();
+});
 // Parse incoming requests data (https://github.com/expressjs/body-parser)
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
