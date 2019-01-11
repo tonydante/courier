@@ -182,6 +182,7 @@ class Admins {
   getOneParcel(req, res) {
     const promise = Parcel.findOne({trackingNo: req.params.id.toLowerCase()}).exec();
     promise.then((parcel) => {
+      console.log(parcel, 'hello there')
       if (parcel) {
         res.status(201).send({
           parcel,
@@ -244,16 +245,37 @@ class Admins {
   * @param {any} res servers response
   * @return {void}
   */
-  updateParcel() {
-    if (!req.decoded.id) {
-      return res.status(403).send({
-        message: 'you have no permission to update this parcel'
-      });
-    }
-    Parcel.update({ _id: id }, { $set: { size: 'large' }}, callback);
+  updateParcel(req, res) {
+    Parcel.findOne({trackingNo: req.params.id }).then((trackingNoFound) => {
+      if (!trackingNoFound) {
+        return res.status(404).send({
+          message: 'tracking number not found'
+        });
+      }
+      if (trackingNoFound) {
+        if(trackingNoFound.trackingNo == req.body.trackingNo) {
+          return res.status(409).send({
+            message: 'tracking no already in use',
+          });
+        }
+        var query = {trackingNo: req.params.id}
+        const updatedTrackingNo = {
+          $set: {
+            trackingNo: req.body.trackingNo,
+          },
+        };
+        Parcel.findOneAndUpdate(query, updatedTrackingNo, { new: true }).then((updated)=> {
+          if (updated) {
+            res.status(201).send({
+              message: 'tracking number updated successfully',
+              updated
+            });
+          } 
+        }).catch(err => console.log(err))
+      }
+    })
   }
 }
-
 
 
 module.exports = new Admins();

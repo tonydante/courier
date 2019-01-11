@@ -9,7 +9,7 @@ let parcelSchema = new mongoose.Schema({
     receiverName: { type: String, required: true, },
     receiverPhone: { type: String, required: true, },
     receiverAddress: { type: String, required: true, },
-    trackingNo: { type: String, required: true, unique: true },
+    trackingNo: { type: String, required: true },
     type: { type: String, required: true,},
     weight: { type: String, required: true, },
     totalFrieght: { type: String, required: true, },
