@@ -182,7 +182,6 @@ class Admins {
   getOneParcel(req, res) {
     const promise = Parcel.findOne({trackingNo: req.params.id.toLowerCase()}).exec();
     promise.then((parcel) => {
-      console.log(parcel, 'hello there')
       if (parcel) {
         res.status(201).send({
           parcel,
@@ -246,6 +245,7 @@ class Admins {
   * @return {void}
   */
   updateParcel(req, res) {
+    console.log(res.body, 'hello there')
     Parcel.findOne({trackingNo: req.params.id }).then((trackingNoFound) => {
       if (!trackingNoFound) {
         return res.status(404).send({
