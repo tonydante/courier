@@ -245,7 +245,7 @@ class Admins {
   * @return {void}
   */
   updateParcel(req, res) {
-    console.log(res.body, 'hello there')
+    console.log(req.body, req.params, 'hello there')
     Parcel.findOne({trackingNo: req.params.id }).then((trackingNoFound) => {
       if (!trackingNoFound) {
         return res.status(404).send({
