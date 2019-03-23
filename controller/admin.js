@@ -245,7 +245,7 @@ class Admins {
   * @return {void}
   */
   updateParcel(req, res) {
-    console.log(req.body, req.params, 'hello there')
+    console.log(req.body, '======>')
     Parcel.findOne({trackingNo: req.params.id }).then((trackingNoFound) => {
       if (!trackingNoFound) {
         return res.status(404).send({
@@ -253,21 +253,26 @@ class Admins {
         });
       }
       if (trackingNoFound) {
-        if(trackingNoFound.trackingNo == req.body.trackingNo) {
-          return res.status(409).send({
-            message: 'tracking no already in use',
-          });
-        }
+        // if(trackingNoFound.trackingNo == req.body.trackingNo) {
+        //   return res.status(409).send({
+        //     message: 'tracking number already in use',
+        //   });
+        // }
         var query = {trackingNo: req.params.id}
         const updatedTrackingNo = {
           $set: {
             trackingNo: req.body.trackingNo,
+            receiverAddress: req.body.receiverAddress,
+            toCity: req.body.toCity,
+            fromCity: req.body.fromCity,
+            scheduledDate: req.body.scheduledDate
+
           },
         };
         Parcel.findOneAndUpdate(query, updatedTrackingNo, { new: true }).then((updated)=> {
           if (updated) {
             res.status(201).send({
-              message: 'tracking number updated successfully',
+              message: 'updated was successfully',
               updated
             });
           } 
